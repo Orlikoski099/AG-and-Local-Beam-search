@@ -37,12 +37,6 @@ class list:
                     v = v + 1
 
 
-teste = list(5)
-
-teste.readFile()
-
-teste.mostraGrafo()
-
 """
 [2, 50][3, 30][4, 26][5, 37]
 
