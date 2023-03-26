@@ -29,3 +29,6 @@ def dijkstra(graph, start):
                 cost[neighbor] = new_cost
                 heapq.heappush(pq, (new_cost, neighbor))
     return cost
+
+
+dijkstra()
