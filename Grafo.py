@@ -1,12 +1,3 @@
-class cidade:
-    def __init__(self, name, custo):
-        self.nome = name
-        self.custo = custo
-
-    def __str__(self):
-        return f"{self.nome},{self.custo}"
-
-
 class list:
     def __init__(self, vertices=None):
         self.vertices = vertices
@@ -45,14 +36,6 @@ class list:
                         v = 0
                     v = v + 1
 
-
-TESTE = 1
-
-teste = list(5)
-
-teste.readFile()
-
-teste.mostraGrafo()
 
 """
 [2, 50][3, 30][4, 26][5, 37]
