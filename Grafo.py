@@ -1,12 +1,3 @@
-class cidade:
-    def __init__(self, name, custo):
-        self.nome = name
-        self.custo = custo
-
-    def __str__(self):
-        return f"{self.nome},{self.custo}"
-
-
 class list:
     def __init__(self, vertices=None):
         self.vertices = vertices
@@ -23,14 +14,14 @@ class list:
             print(" ")
 
     def printFile(self):
-        file = open("teste.txt", "a")
+        file = open("SI/Teste.txt", "a")
         for i in range(self.vertices):
             for j in self.grafo[i]:
                 file.write(str(j), ",")
             file.write("\n")
         file.close
 
-    def readFile(self, name="teste.txt"):
+    def readFile(self, name="SI/Teste.txt"):
         v = 0
         file = open(name, "r")
         for i in range(self.vertices):
@@ -45,8 +36,6 @@ class list:
                         v = 0
                     v = v + 1
 
-
-TESTE = 1
 
 teste = list(5)
 
