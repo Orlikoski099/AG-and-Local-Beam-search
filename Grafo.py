@@ -11,6 +11,7 @@ class list:
     def __init__(self, vertices=None):
         self.vertices = vertices
         self.grafo = [[] for i in range(self.vertices)]
+        
 
     def criaCaminho(self, u, v, custo):
         self.grafo[u - 1].append([v, custo])
