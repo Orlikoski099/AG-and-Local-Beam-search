@@ -1,4 +1,3 @@
-from grafo import cidade
 import random
 
 def local_search(initial_solution, generate_neighbors, evaluate_solution, max_iterations):
