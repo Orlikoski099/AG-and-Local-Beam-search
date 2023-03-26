@@ -23,14 +23,14 @@ class list:
             print(" ")
 
     def printFile(self):
-        file = open("SI/Teste.txt", "a")
+        file = open("teste.txt", "a")
         for i in range(self.vertices):
             for j in self.grafo[i]:
                 file.write(str(j), ",")
             file.write("\n")
         file.close
 
-    def readFile(self, name="SI/Teste.txt"):
+    def readFile(self, name="teste.txt"):
         v = 0
         file = open(name, "r")
         for i in range(self.vertices):
