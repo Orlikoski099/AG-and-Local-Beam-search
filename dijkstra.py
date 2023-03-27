@@ -1,27 +1,19 @@
-from grafo import list
-import heapq
+import networkx as nx
 
-teste = list(5)
+filename = "Z:\Facul\SI\grafo.txt"
 
-teste.readFile()
+def read_graph_from_file(filename):
+    G = nx.Graph()
+    with open(filename, 'r') as file:
+        for line in file:
+            v1, v2, weight = map(int, line.strip().split(' '))
+            G.add_edge(v1, v2, weight=weight)
+    return G
 
-teste.printFile()
+def find_shortest_path_in_file_graph(filename, start_node, end_node):
+    G = read_graph_from_file(filename)
+    shortest_path, shortest_path_length = nx.dijkstra_path(G, start_node, end_node), nx.dijkstra_path_length(G, start_node, end_node)
+    print("O caminho mínimo de {} para {} é: {}".format(start_node, end_node, shortest_path))
+    print("O custo do caminho mínimo é: {}".format(shortest_path_length))
 
-
-def dijkstra(graph, start):
-    cost = {node: float('inf') for node in graph}
-    cost[start] = 0
-    pq = [(0, start)]
-    while pq:
-        current_cost, current_node = heapq.heappop(pq)
-        if current_cost > cost[current_node]:
-            continue
-        for neighbor, weight in graph[current_node].items():
-            new_cost = cost[current_node] + weight
-            if new_cost < cost[neighbor]:
-                cost[neighbor] = new_cost
-                heapq.heappush(pq, (new_cost, neighbor))
-    return cost
-
-
-dijkstra()
+find_shortest_path_in_file_graph(filename, 96, 85)
