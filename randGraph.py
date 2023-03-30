@@ -32,4 +32,4 @@ def generate_random_weighted_graph(num_nodes, num_edges):
     plt.show()
 
 # Exemplo de uso
-generate_random_weighted_graph(15, 300)
+generate_random_weighted_graph(15, 60)

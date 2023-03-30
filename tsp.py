@@ -42,7 +42,7 @@ def tsp(start, G):
 
 
 if __name__ == '__main__':
-    filename = sys.argv[1]
+    filename = "grafo.txt"
     start = 8
 
     G = {}
