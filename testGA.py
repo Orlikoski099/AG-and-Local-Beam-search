@@ -5,7 +5,7 @@ import time
 
 FILENAME = "Z:\Facul\SI\local-beam-search\kGrafo.txt"
 
-MUTACAO = 80
+MUTACAO = 60
 
 
 
@@ -65,13 +65,21 @@ def mix_vectors(v1, v2):
     
     mixed[n-1] = v1[n-1]
     
+    # Índices aleatórios para os elementos do meio dos vetores
+    indices = random.sample(range(1, n-1), n-2)
+    
     for i in range(1, n-1):
-        if v1[i] not in mixed[:i]:
-            mixed[i] = v1[i]
-        elif v2[i] not in mixed[:i]:
-            mixed[i] = v2[i]
+        if i in indices:
+            # Se o índice foi selecionado aleatoriamente, mistura com o outro vetor
+            if v1[i] not in mixed[:i]:
+                mixed[i] = v1[i]
+            elif v2[i] not in mixed[:i]:
+                mixed[i] = v2[i]
+            else:
+                raise ValueError("Não foi possível misturar os vetores")
         else:
-            raise ValueError("Não foi possível misturar os vetores")
+            # Se o índice não foi selecionado aleatoriamente, copia o valor de v1
+            mixed[i] = v1[i]
     
     return mixed
 
@@ -90,7 +98,7 @@ def crossover(plebe):
         v2 = sequencias[random.randint(0, size-1)]
         newSon = mix_vectors(v1, v2) 
         newPop.append(newSon)
-        print(newSon)
+        # print(newSon)
 
     return newPop
 
@@ -119,6 +127,9 @@ def newGen (final):
 
 def run(pop, gen):
 
+    costHistory = []
+    lastCost = -1
+
     populacao = []
     G = read_graph_from_file()
 
@@ -145,14 +156,19 @@ def run(pop, gen):
         ordenado = sorted(final_population, key=lambda son: son.custo)
         # for i in ordenado:
         #     print(i.custo)
+
         print(f"melhor custo da geração {j}: {ordenado[0].custo}")
+        if ordenado[0].custo != lastCost:
+            lastCost = ordenado[0].custo
+            costHistory.append(lastCost)
         populacao = newGen(ordenado)
 
+    print(f"As evoluções foram: {costHistory}")
     # print (sequential_search(G, final_population[3].sequencia))
     # print (final_population[1].sequencia)
     # print (final_population[2].sequencia)
 
 startTime = time.time()
-run(20, 15)
+run(40, 500)
 
 print(time.time()-startTime)
