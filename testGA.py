@@ -5,7 +5,7 @@ import time
 
 FILENAME = "Z:\Facul\SI\local-beam-search\kGrafo.txt"
 
-MUTACAO = 60
+MUTACAO = 80
 
 
 
@@ -86,7 +86,11 @@ def crossover(plebe):
     size = len(sequencias)
 
     for i in range(size):
-        newPop.append(mix_vectors(sequencias[random.randint(0, size-1)], sequencias[random.randint(0, size-1)]))
+        v1 = sequencias[random.randint(0, size-1)]
+        v2 = sequencias[random.randint(0, size-1)]
+        newSon = mix_vectors(v1, v2) 
+        newPop.append(newSon)
+        print(newSon)
 
     return newPop
 
@@ -139,13 +143,16 @@ def run(pop, gen):
                  
 
         ordenado = sorted(final_population, key=lambda son: son.custo)
+        # for i in ordenado:
+        #     print(i.custo)
         print(f"melhor custo da geração {j}: {ordenado[0].custo}")
         populacao = newGen(ordenado)
 
-    print (populacao[0])
-    print(len(populacao))
+    # print (sequential_search(G, final_population[3].sequencia))
+    # print (final_population[1].sequencia)
+    # print (final_population[2].sequencia)
 
 startTime = time.time()
-run(10, 20)
+run(20, 15)
 
 print(time.time()-startTime)

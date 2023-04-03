@@ -2,7 +2,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import random
 
-n = 30  # Número de vértices
+n = 50  # Número de vértices
 G = nx.DiGraph(nx.complete_graph(n).to_directed())
 
 def showGraph():
@@ -18,6 +18,6 @@ def showGraph():
 
 # Atribuindo pesos aleatórios às arestas
 for u, v in G.edges():
-    G[u][v]['weight'] = random.randint(1, 500)
+    G[u][v]['weight'] = random.randint(1, 25000)
 
 showGraph()
