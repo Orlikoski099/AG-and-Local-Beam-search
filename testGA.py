@@ -1,13 +1,12 @@
+from contextlib import nullcontext
 import random
 import math
 import networkx as nx
 import time
 
-FILENAME = "Z:\Facul\SI\local-beam-search\kGrafo.txt"
+FILENAME = "D:/facul/SI/kGrafo.txt"
 
-MUTACAO = 60
-
-
+MUTACAO = 70
 
 class Son:
     def __init__(self, sequencia, custo):
@@ -42,11 +41,15 @@ def sequential_search(graph, vertices):
     return total_weight
 
 def mutation(son):
-    seq = son.sequencia
-    sizeMax =  len(seq)-1
-    nums = list(range(1, sizeMax))
+    a = []
+    if (type(son) != type(a)):
+        seq = son.sequencia
+    else:
+        seq = son
+    sizeMax =  len(seq)
+    nums = list(range(0, sizeMax))
     random.shuffle(nums)
-    swap1 = nums[0]
+    swap1 = 0
     swap2 = nums[1]
 
     aux = seq[swap1]
@@ -66,9 +69,9 @@ def mix_vectors(v1, v2):
     mixed[n-1] = v1[n-1]
     
     # Índices aleatórios para os elementos do meio dos vetores
-    indices = random.sample(range(1, n-1), n-2)
+    indices = random.sample(range(0, n), n-2)
     
-    for i in range(1, n-1):
+    for i in range(0, n-1):
         if i in indices:
             # Se o índice foi selecionado aleatoriamente, mistura com o outro vetor
             if v1[i] not in mixed[:i]:
@@ -106,19 +109,28 @@ def newGen (final):
     newPop = []
     sizeFinal = len(final)
     mutations = 0
+    # elite = 2
     elite = math.ceil((sizeFinal * 20)/100)
 
-    for i in range(elite):
-        newPop.append(final[i].sequencia)
-        final.remove(final[i])
+    if elite > 0:
+        for i in range(elite):
+            newPop.append(final[i].sequencia)
+            final.remove(final[i])
     for i in final:
         if random.randint(1, 100) > MUTACAO:
             mutations += 1
+            final.remove(i)
             i.sequencia = mutation(i)
             newPop.append(i.sequencia)
-            final.remove(i)
 
     newSons = crossover(final)
+
+    # for i in newSons:
+    #     if random.randint(1, 100) > MUTACAO:
+    #         mutations += 1
+    #         newSons.remove(i)
+    #         i = mutation(i)
+    #         newSons.append(i)
 
     for i in newSons:
         newPop.append(i)
@@ -138,7 +150,7 @@ def run(pop, gen):
     for i in range(pop):
         solucao = vertices.copy()
         random.shuffle(solucao)
-        solucao.append(solucao[0])
+        # solucao.append(solucao[0])
         populacao.append(solucao)
 
 
@@ -148,7 +160,8 @@ def run(pop, gen):
         print(f"Gen: {j}")
         final_population.clear()
         for i in populacao:
-            custo = sequential_search(G, i)
+            custo = sequential_search(G, i[:len(i)-1])
+            custo += nx.shortest_path_length(G, i[len(i)-1], 0, weight='weight')
             son = Son(i, custo)
             final_population.append(son)
                  
@@ -158,6 +171,8 @@ def run(pop, gen):
         #     print(i.custo)
 
         print(f"melhor custo da geração {j}: {ordenado[0].custo}")
+        seqToShow = ordenado[0].sequencia
+        print(f"melhor individuo da geração {j}: {seqToShow}")
         if ordenado[0].custo != lastCost:
             lastCost = ordenado[0].custo
             costHistory.append(lastCost)
@@ -169,6 +184,6 @@ def run(pop, gen):
     # print (final_population[2].sequencia)
 
 startTime = time.time()
-run(40, 500)
+run(20, 1000)
 
 print(time.time()-startTime)
