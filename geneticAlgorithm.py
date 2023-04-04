@@ -6,7 +6,7 @@ import time
 
 FILENAME = "D:/facul/SI/kGrafo.txt"
 
-MUTACAO = 70
+MUTACAO = 30
 
 class Son:
     def __init__(self, sequencia, custo):
@@ -68,12 +68,10 @@ def mix_vectors(v1, v2):
     
     mixed[n-1] = v1[n-1]
     
-    # Índices aleatórios para os elementos do meio dos vetores
     indices = random.sample(range(0, n), n-2)
     
     for i in range(0, n-1):
         if i in indices:
-            # Se o índice foi selecionado aleatoriamente, mistura com o outro vetor
             if v1[i] not in mixed[:i]:
                 mixed[i] = v1[i]
             elif v2[i] not in mixed[:i]:
@@ -81,12 +79,11 @@ def mix_vectors(v1, v2):
             else:
                 raise ValueError("Não foi possível misturar os vetores")
         else:
-            # Se o índice não foi selecionado aleatoriamente, copia o valor de v1
             mixed[i] = v1[i]
     
     return mixed
 
-def crossover(plebe):
+def crossover(plebe, lenOfElite = 0):
     
     sequencias = []
     newPop = []
@@ -94,14 +91,17 @@ def crossover(plebe):
     for i in plebe:
         sequencias.append(i.sequencia)
 
+
     size = len(sequencias)
 
-    for i in range(size):
+    sizeToReturn = size
+
+
+    for i in range(sizeToReturn - lenOfElite):
         v1 = sequencias[random.randint(0, size-1)]
         v2 = sequencias[random.randint(0, size-1)]
         newSon = mix_vectors(v1, v2) 
         newPop.append(newSon)
-        # print(newSon)
 
     return newPop
 
@@ -109,28 +109,22 @@ def newGen (final):
     newPop = []
     sizeFinal = len(final)
     mutations = 0
-    # elite = 2
-    elite = math.ceil((sizeFinal * 20)/100)
+    elite = math.ceil((sizeFinal * 10)/100)
+    lenOfElite = 0
 
     if elite > 0:
         for i in range(elite):
             newPop.append(final[i].sequencia)
-            final.remove(final[i])
+            # final.remove(final[i])
+            lenOfElite += 1
     for i in final:
-        if random.randint(1, 100) > MUTACAO:
+        if random.randint(1, 100) < MUTACAO and i.sequencia not in newPop:
             mutations += 1
             final.remove(i)
             i.sequencia = mutation(i)
             newPop.append(i.sequencia)
 
-    newSons = crossover(final)
-
-    # for i in newSons:
-    #     if random.randint(1, 100) > MUTACAO:
-    #         mutations += 1
-    #         newSons.remove(i)
-    #         i = mutation(i)
-    #         newSons.append(i)
+    newSons = crossover(final, lenOfElite)
 
     for i in newSons:
         newPop.append(i)
@@ -150,7 +144,6 @@ def run(pop, gen):
     for i in range(pop):
         solucao = vertices.copy()
         random.shuffle(solucao)
-        # solucao.append(solucao[0])
         populacao.append(solucao)
 
 
@@ -167,8 +160,6 @@ def run(pop, gen):
                  
 
         ordenado = sorted(final_population, key=lambda son: son.custo)
-        # for i in ordenado:
-        #     print(i.custo)
 
         print(f"melhor custo da geração {j}: {ordenado[0].custo}")
         seqToShow = ordenado[0].sequencia
@@ -179,11 +170,8 @@ def run(pop, gen):
         populacao = newGen(ordenado)
 
     print(f"As evoluções foram: {costHistory}")
-    # print (sequential_search(G, final_population[3].sequencia))
-    # print (final_population[1].sequencia)
-    # print (final_population[2].sequencia)
-
+    
 startTime = time.time()
-run(20, 1000)
+run(20, 10)
 
 print(time.time()-startTime)

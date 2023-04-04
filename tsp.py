@@ -42,7 +42,7 @@ def tsp(start, G):
 
 
 if __name__ == '__main__':
-    filename = "grafo.txt"
+    filename = "kGrafo.txt"
     start = 8
 
     G = {}

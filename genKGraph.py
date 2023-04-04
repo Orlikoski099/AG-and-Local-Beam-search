@@ -2,7 +2,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import random
 
-n = 50  # Número de vértices
+n = 300  # Número de vértices
 G = nx.DiGraph(nx.complete_graph(n).to_directed())
 
 def showGraph():
